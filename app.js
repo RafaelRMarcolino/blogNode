@@ -4,8 +4,13 @@ const handlebars  = require('express-handlebars');
 const bodyParser = require('body-parser')
 const admin = require("./routers/admin");
 const path = require("path");
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).then(() => {
+    console.log("conecctado db")
+}).catch((err) => {
+    console.log("erro")
+}) 
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
