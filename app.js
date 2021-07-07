@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const handlebars  = require('express-handlebars');
 const bodyParser = require('body-parser')
+const admin = require("./routers/admin");
 //const mongoose = require('mongoose');
 
 
@@ -14,6 +15,8 @@ app.get("/", (req, res) => {
 
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
+app.use("/admin", admin)
 
 app.listen(8081, () => {
     console.log("Conectado com sucesso ");
