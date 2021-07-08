@@ -6,15 +6,22 @@ const admin = require("./routers/admin");
 const path = require("path");
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).then(() => {
-    console.log("conecctado db")
-}).catch((err) => {
-    console.log("erro")
-}) 
+
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
  
+
+
+mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).then(() => {
+    console.log("conecctado db")
+}).catch((err) => {
+    console.log("erro" + err)
+}) 
+
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => {

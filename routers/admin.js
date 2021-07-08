@@ -1,23 +1,38 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
-riquerie("../models/Categorias")
+const mongoose = require("mongoose");
+require("../models/Categorias")
 const Categorias = mongoose.model('categorias');
 
 router.get("/", (req,res) => {
     res.render("index.handlebars")
 });
 
-
-router.get("/postagens", (req,res) => {
-    res.render("postagens.handlebars")
+router.get("/categorias", (req,res) => {
+    
+    res.render("categorias.handlebars")
 });
 
+router.get("/categorias/add", (req,res) => {
 
-router.get("/postagens/add", (req,res) => {
-    res.render("addpostagens.handlebars")
-});
+    res.render("addcategorias.handlebars")
+})
 
+router.post("/categorias/new", (req,res) => {
+
+    const novaCategoria  = {
+        nome : req.body.nome,
+        slug : req.body.slug
+    }
+
+    new Categorias(novaCategoria).save().then(() => {
+        console.log("salvo com sucesso");
+    }).catch((err) => {
+        console.log(" erro ao cadastrar " + err);
+    })
+
+
+})
 
 module.exports = router;
 
