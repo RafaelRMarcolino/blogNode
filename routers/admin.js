@@ -8,10 +8,28 @@ router.get("/", (req,res) => {
     res.render("index.handlebars")
 });
 
+
+
+
+
+
+
+
+
+
+
+
 router.get("/categorias", (req,res) => {
+    Categorias.find().then((categorias) => {
+        res.render("categorias.handlebars", {categorias : categorias.map(categorias => categorias.toJSON())})
+
+    }).catch((err) => {
+        console.log("erro ao mostrar a categoria ", err )
+    })
     
-    res.render("categorias.handlebars")
 });
+
+
 
 router.get("/categorias/add", (req,res) => {
 
@@ -19,50 +37,31 @@ router.get("/categorias/add", (req,res) => {
     })
 
 
-
-
-
-
-
-
 router.post("/categorias/new", (req,res) => {
-
     var erros = []
 
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
         erros.push({texto: "erro no nome"})
-        console.log("1")
     }
     
     if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
         erros.push({texto: "erro no slug"})
-        console.log("2")
-
     }
 
     if(req.body.nome.length <= 2){
         erros.push({texto: "erro no tamanho do nome"})
-        console.log("3")
-
-
     }
     if(erros.length > 0){
         res.render("addcategorias", {erros: erros})
-        console.log("4")
-
     }
 
     else{
-
         const novaCategoria = {
             nome : req.body.nome,
             slug : req.body.slug
-
-
         }
 
         new Categorias(novaCategoria).save().then(() => {
-
             req.flash("success_msg", "cadastrado com sucesso")
             res.redirect("/admin/categorias")
             
@@ -71,16 +70,7 @@ router.post("/categorias/new", (req,res) => {
             console.log("erro cadastro" + err)
 
         })
-
     }
-
-    
-    
-
-    
-    
-
-    
 })
 
 module.exports = router;
