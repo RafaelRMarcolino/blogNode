@@ -9,7 +9,6 @@ router.get("/", (req,res) => {
 });
 
 
-
 router.get("/categorias", (req,res) => {
     Categorias.find().then((categorias) => {
         res.render("categorias.handlebars", {categorias : categorias.map(categorias => categorias.toJSON())})
@@ -20,13 +19,10 @@ router.get("/categorias", (req,res) => {
     
 });
 
-
-
 router.get("/categorias/add", (req,res) => {
 
     res.render("addcategorias.handlebars")
     })
-
 
 router.post("/categorias/new", (req,res) => {
     var erros = []
@@ -98,6 +94,25 @@ router.post("/categorias/del",  (req, res) => {
         res.redirect("admin")
     })
 })
+
+
+//Postagens
+
+
+router.get("/postagens", (req,res) => {
+    res.render("postagens.handlebars")
+
+})
+
+
+
+
+
+router.get("/postagens/add", (req,res) => {
+    res.render("addpostagens.handlebars")
+})
+
+
 
 module.exports = router;
 
