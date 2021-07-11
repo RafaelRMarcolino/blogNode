@@ -8,8 +8,11 @@
         <h4>{{slug}}</h4>
 
         <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-primary mt-2"> Editar </button></a>
-        <a href="/admin/categorias/edit"><button class="btn btn-danger mt-2"> Deletar </button></a>
-   
+        <form action="/admin/categorias/del" method="post">
+            <input type="hidden" name="id" value="{{_id}}">
+            <button type="submit" class="btn btn-danger mt-2"> Deletar </button>
+        </form>
+
     </div>
 
 </div>
