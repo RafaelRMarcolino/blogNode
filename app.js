@@ -20,24 +20,21 @@ mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).the
     console.log("erro" + err)
 }) 
 
+app.use(flash());
 
-//session
+
 app.use(session({
-  secret: 'blogt',
+  secret: 'blog',
   resave: true,
   saveUninitialized: true,
 }))
 
-//flash
-app.use(flash());
+app.use((req, res, next) => {
+  res.locals.erro_msg = req.flash("erro_msg")
+  res.locals.success_msg = req.flash("success_msg")
+  next()
 
-
-app.configure(function() {
-  app.use(express.cookieParser('keyboard cat'));
-  app.use(express.session({ cookie: { maxAge: 60000 }}));
-  app.use(flash());
-});
-
+})
 
 app.use(express.static(path.join(__dirname, 'public')));
 
