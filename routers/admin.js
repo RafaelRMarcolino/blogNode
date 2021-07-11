@@ -105,11 +105,14 @@ router.get("/postagens", (req,res) => {
 })
 
 
-
-
-
 router.get("/postagens/add", (req,res) => {
-    res.render("addpostagens.handlebars")
+    Categorias.findOne().then((categorias) => {
+        res.render("addpostagens", {categorias : categorias})
+
+    }).catch((err) => {
+        console.log("erro ao mostrar categorias " + err)
+        res.redirect("admin")
+    })
 })
 
 
