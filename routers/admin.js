@@ -10,15 +10,6 @@ router.get("/", (req,res) => {
 
 
 
-
-
-
-
-
-
-
-
-
 router.get("/categorias", (req,res) => {
     Categorias.find().then((categorias) => {
         res.render("categorias.handlebars", {categorias : categorias.map(categorias => categorias.toJSON())})
@@ -71,6 +62,31 @@ router.post("/categorias/new", (req,res) => {
 
         })
     }
+})
+
+
+router.get("/categorias/edit/:id", (req, res) => {
+    
+    Categorias.findOne({_id: req.params.id}).lean().then((categorias) => {
+        res.render("edit.handlebars", {categorias : categorias})
+    }).catch((err) => {
+        console.log("erro " + err)
+    })     
+})
+
+router.post("/categorias/edit/:id", (req, res) => {
+    categorias.nome = req.body.nome,
+    categorias.slug = req.body.slug
+
+    Categorias.save().then((categorias) => {
+
+        req.flash.success_msg("success_msg", "editado com sucesso")
+        res.redirect("admin/categorias")
+
+    }).catch((err) => {
+        res.redirect("admin")
+        req.flash("erro_msg", "nao")
+    })
 })
 
 module.exports = router;
