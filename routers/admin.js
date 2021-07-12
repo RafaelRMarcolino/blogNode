@@ -101,10 +101,36 @@ router.post("/categorias/del",  (req, res) => {
 //Postagens
 
 
-router.get("/postagens", (req,res) => {
-    res.render("postagens.handlebars")
 
+
+
+
+
+
+
+router.get("/postagens", (req,res) => {
+
+    Postagems.find().lean().then((postagens) => {
+
+        res.render("postagens.handlebars", {postagens: postagens})
+
+    }).catch((err) => {
+        console.log('erro ao carregar post' + err)
+        res.redirect('admin'+ err)
+    })
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 router.get("/postagens/add", (req,res) => {
@@ -116,10 +142,6 @@ router.get("/postagens/add", (req,res) => {
         res.redirect("admin")
     })
 })
-
-
-
-
 
 
 
@@ -173,3 +195,5 @@ router.post("/postagens/add/new", (req,res) => {
 })
 
 module.exports = router;
+
+

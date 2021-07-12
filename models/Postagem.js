@@ -20,7 +20,7 @@ const Postagem = new Schema({
         riquered: true
     },
     categorias: {
-        type: String,
+        type: Schema.Types.ObjectId,
         riquered: true
     },
     data: {
