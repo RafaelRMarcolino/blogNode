@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 require("../models/Categorias")
+require("../models/Postagem");
 const Categorias = mongoose.model('categorias');
+const Postagems = mongoose.model('postagem')
 
 router.get("/", (req,res) => {
     res.render("index.handlebars")
@@ -113,6 +115,61 @@ router.get("/postagens/add", (req,res) => {
         console.log("erro ao mostrar categorias " + err)
         res.redirect("admin")
     })
+})
+
+
+
+
+
+
+
+router.post("/postagens/add/new", (req,res) => {
+    var erros = []
+
+        if(!req.body.titulo || typeof req.body.titulo == undefined ||req.body.titulo == null){
+            erros.push({texto: "titulo vazio"})
+
+        }
+        
+        if(!req.body.slug || typeof req.body.slug == undefined ||req.body.slug == null){
+            erros.push({texto: "titulo slug"})
+
+        }
+        
+        if(!req.body.descricao || typeof req.body.descricao == undefined ||req.body.descricao == null){
+            erros.push({texto: "titulo descricao"})
+
+        }
+
+        if(erros.length > 0){
+            res.render('addpostagens', {erros: erros})
+            console.log("deu erros 8888" + erros)
+        }
+        
+        else{
+
+
+            const novaPostagem = ({
+                titulo : req.body.titulo,
+                slug: req.body.slug,
+                descricao: req.body.descricao,
+                conteudo: req.body.conteudo,
+                categorias: req.body.categorias
+
+            })
+
+            new Postagems(novaPostagem).save().then(() => {
+
+                req.flash("success_msg", "Salvo com sucesso")
+                console.log("salvo com sucesso")
+                res.redirect("/admin/postagens")
+            }).catch((err) => {
+                req.flash("erro_msg", "erro ao cadastrar") 
+                console.log("erro ao salvar" + err)
+                res.redirect('/admin')
+
+            })
+        }
 })
 
 module.exports = router;
