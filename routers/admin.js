@@ -106,7 +106,7 @@ router.get("/postagens", (req,res) => {
 
 
 router.get("/postagens/add", (req,res) => {
-    Categorias.findOne().then((categorias) => {
+    Categorias.find().lean().then((categorias) => {
         res.render("addpostagens", {categorias : categorias})
 
     }).catch((err) => {
@@ -115,8 +115,4 @@ router.get("/postagens/add", (req,res) => {
     })
 })
 
-
-
 module.exports = router;
-
-
