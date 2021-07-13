@@ -10,7 +10,6 @@ router.get("/", (req,res) => {
     res.render("index.handlebars")
 });
 
-
 router.get("/categorias", (req,res) => {
     Categorias.find().then((categorias) => {
         res.render("categorias.handlebars", {categorias : categorias.map(categorias => categorias.toJSON())})
@@ -49,7 +48,6 @@ router.post("/categorias/new", (req,res) => {
             nome : req.body.nome,
             slug : req.body.slug
         }
-
         new Categorias(novaCategoria).save().then(() => {
             req.flash("success_msg", "cadastrado com sucesso")
             res.redirect("/admin/categorias")
@@ -57,11 +55,9 @@ router.post("/categorias/new", (req,res) => {
         }).catch((err) => {
             req.flash("erro_msg", "erro ao cadastrar")
             console.log("erro cadastro" + err)
-
         })
     }
 })
-
 
 router.get("/categorias/edit/:id", (req, res) => {
     
@@ -99,39 +95,15 @@ router.post("/categorias/del",  (req, res) => {
 
 
 //Postagens
-
-
-
-
-
-
-
-
-
 router.get("/postagens", (req,res) => {
-
     Postagems.find().lean().then((postagens) => {
 
         res.render("postagens.handlebars", {postagens: postagens})
-
     }).catch((err) => {
         console.log('erro ao carregar post' + err)
         res.redirect('admin'+ err)
     })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 router.get("/postagens/add", (req,res) => {
     Categorias.find().lean().then((categorias) => {
@@ -143,41 +115,30 @@ router.get("/postagens/add", (req,res) => {
     })
 })
 
-
-
 router.post("/postagens/add/new", (req,res) => {
     var erros = []
 
         if(!req.body.titulo || typeof req.body.titulo == undefined ||req.body.titulo == null){
             erros.push({texto: "titulo vazio"})
-
         }
-        
         if(!req.body.slug || typeof req.body.slug == undefined ||req.body.slug == null){
             erros.push({texto: "titulo slug"})
-
         }
-        
         if(!req.body.descricao || typeof req.body.descricao == undefined ||req.body.descricao == null){
             erros.push({texto: "titulo descricao"})
-
         }
-
         if(erros.length > 0){
             res.render('addpostagens', {erros: erros})
             console.log("deu erros 8888" + erros)
         }
         
         else{
-
-
             const novaPostagem = ({
                 titulo : req.body.titulo,
                 slug: req.body.slug,
                 descricao: req.body.descricao,
                 conteudo: req.body.conteudo,
                 categorias: req.body.categorias
-
             })
 
             new Postagems(novaPostagem).save().then(() => {
@@ -193,6 +154,36 @@ router.post("/postagens/add/new", (req,res) => {
             })
         }
 })
+
+
+router.get("/postagens/adit/:id", (req, res) =>{
+    
+    Postagems.findOne({_id: req.params.id}).lean().then((postagems) => {
+        
+        Categorias.find().lean().then((categorias) => {
+            res.render('editpost', {categorias: categorias, postagems: postagems})
+        }).catch((err) => {
+            console.log('nao funcionou categorias')
+            req.flash('erro_msg',  'erro com categoria')
+            res.redirect('admin')
+        })
+        
+    }).catch((err) => {
+        console.log('postagens erro' + err )
+        req.flash('erro_msg', 'erro ao mostrar postagens')
+        res.redirect('admin')
+    })
+});
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;
 
