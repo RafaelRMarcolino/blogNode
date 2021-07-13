@@ -96,7 +96,7 @@ router.post("/categorias/del",  (req, res) => {
 
 //Postagens
 router.get("/postagens", (req,res) => {
-    Postagems.find().lean().then((postagens) => {
+    Postagems.find().sort({data:'desc'}).lean().then((postagens) => {
 
         res.render("postagens.handlebars", {postagens: postagens})
     }).catch((err) => {
@@ -176,7 +176,26 @@ router.get("/postagens/adit/:id", (req, res) =>{
 });
 
 
+router.post("/postagens/edit/new", (req, res) => {
 
+    postagems.titulo = req.body.titulo,
+    postagems.slug = req.body.slug,
+    postagems.descricao = req.body.descricao,
+    postagems.conteudo = req.body.conteudo,
+    categorias.categorias = req.body.categorias
+
+    Postagems.save().then((postagems) => {
+
+        req.flash("success_msg", "editar salvo com sucesso")
+        console.log("salvo edicao com sucesso")
+        res.redirect('admin/postagens')
+
+    }).catch((err) => {
+        req.flash("erro_msg", "erro ao salvar")
+        console.log('deu')
+        res.redirect('admin')
+    })
+})
 
 
 
