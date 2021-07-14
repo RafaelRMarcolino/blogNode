@@ -7,6 +7,8 @@ const path = require("path");
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session')
+require("./models/Postagem")
+const Postagem = mongoose.model('postagem')
 
 
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -39,20 +41,57 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
-
-
-app.get("/", (req, res) => {
-    res.render('inicio.handlebars');
-});
-
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.use("/admin", admin)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get("/", (req, res) => {
+  Postagem.find().lean().then((postagems) => {
+    res.render('inicio.handlebars', {postagems: postagems})
+
+  }).catch((err) => {
+    console.log('erro ao carregar ', err)
+    res.redirect('404.handlebars')
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(8081, () => {
     console.log("Conectado com sucesso ");
 });
+
+
+
 
 
