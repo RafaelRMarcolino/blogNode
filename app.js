@@ -10,12 +10,9 @@ const session = require('express-session')
 require("./models/Postagem")
 const Postagem = mongoose.model('postagem')
 
-
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
  
-
-
 mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).then(() => {
     console.log("conecctado db")
 }).catch((err) => {
@@ -23,7 +20,6 @@ mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).the
 }) 
 
 app.use(flash());
-
 
 app.use(session({
   secret: 'blog',
@@ -46,26 +42,8 @@ app.set('view engine', 'handlebars');
 
 app.use("/admin", admin)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get("/", (req, res) => {
-  Postagem.find().lean().then((postagems) => {
+  Postagem.find().sort({data: 'desc'}).lean().then((postagems) => {
     res.render('inicio.handlebars', {postagems: postagems})
 
   }).catch((err) => {
@@ -74,24 +52,6 @@ app.get("/", (req, res) => {
   })
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.listen(8081, () => {
     console.log("Conectado com sucesso ");
 });
-
-
-
-
-
