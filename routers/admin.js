@@ -200,6 +200,19 @@ router.post("/postagens/edit/new", (req, res) => {
 
 
     
+router.post("/postagens/del/:id", (req, res)  => {
+
+    Postagems.remove({_id: req.body.id}).then(() => {
+        console.log("Deletado com sucesso")
+        req.flash("erro_msg", "Postagem deletada")
+        res.redirect("/admin/postagens")
+    }).catch((err) => {
+        console.log('erro ao deletar')
+        req.flash('erro_msg', 'erro ao deletar')
+        res.render('admin')
+    })
+})
+
 
 
 
