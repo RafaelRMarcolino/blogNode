@@ -11,7 +11,7 @@ router.get("/", (req,res) => {
 });
 
 router.get("/categorias", (req,res) => {
-    Categorias.find().then((categorias) => {
+    Categorias.find().sort({data: 'desc'}).then((categorias) => {
         res.render("categorias.handlebars", {categorias : categorias.map(categorias => categorias.toJSON())})
 
     }).catch((err) => {
@@ -19,6 +19,8 @@ router.get("/categorias", (req,res) => {
     })
     
 });
+
+
 
 router.get("/categorias/add", (req,res) => {
 
@@ -96,7 +98,7 @@ router.post("/categorias/del",  (req, res) => {
 
 //Postagens
 router.get("/postagens", (req,res) => {
-    Postagems.find().sort({data:'desc'}).lean().then((postagens) => {
+    Postagems.find().populate('categorias').sort({data:'desc'}).lean().then((postagens) => {
 
         res.render("postagens.handlebars", {postagens: postagens})
     }).catch((err) => {

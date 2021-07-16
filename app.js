@@ -43,13 +43,17 @@ app.set('view engine', 'handlebars');
 app.use("/admin", admin)
 
 app.get("/", (req, res) => {
-  Postagem.find().sort({data: 'desc'}).lean().then((postagems) => {
+  Postagem.find().populate("categorias").sort({data: 'desc'}).lean().then((postagems) => {
     res.render('inicio.handlebars', {postagems: postagems})
 
   }).catch((err) => {
     console.log('erro ao carregar ', err)
-    res.redirect('404.handlebars')
+    res.redirect('/404')
   })
+})
+
+app.get('/404', (req, res) => {
+  res.send('Erro na pagina')
 })
 
 app.listen(8081, () => {
