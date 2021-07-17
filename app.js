@@ -6,9 +6,13 @@ const admin = require("./routers/admin");
 const path = require("path");
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
-const session = require('express-session')
+const session = require('express-session');
+const { get } = require("./routers/admin");
 require("./models/Postagem")
 const Postagem = mongoose.model('postagem')
+require("./models/Categorias")
+const Categorias = mongoose.model('categorias')
+
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
@@ -59,4 +63,30 @@ app.get('/404', (req, res) => {
 app.listen(8081, () => {
     console.log("Conectado com sucesso ");
 });
+
+app.get('/postagens/:slug', (req, res) => {
+  Postagem.findOne({slug: req.params.slug}).lean().then((postagems) => {
+    if(postagems){
+
+      res.render('postagens/index', {postagems: postagems})
+    }else{
+      req.flash('erro_msg', "erro ao cadastrar o slug")
+      res.redirect("/")
+    }
+
+  }).catch((err)=>{
+    req.flash('erro_msg', "erro ao cadastrar o slug")
+    res.redirect("/")
+  })
+})
+
+
+app.get('/categoria', (req, res) => {
+  Categorias.find().lean().then((categorias) => {
+
+    res.render('categorias/index', {categorias: categorias})
+
+  })
+})
+
 

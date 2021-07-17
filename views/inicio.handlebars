@@ -13,18 +13,15 @@
 <div class="na mt-2 col-md-8 offset-2 mt-2">
 <div class="jumbotron ">
      
-  
             <h4>Ttitulo: {{titulo}}</h4>
             <p>{{descricao}}</p>
             <hr>
             <p>{{conteudo}}</p>
+            <a href="/postagens/{{slug}}"><button class="btn btn-success">mostrar mais</button></a>
             <small> {{categorias.nome}}</small> 
             <small>Data de Publicaçao {{data}} </small>
-  <a href=""><button></button></a>
-
 
 </div>
 </div>
 {{else}}
-
 {{/each}}

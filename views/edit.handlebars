@@ -4,16 +4,10 @@
 {{else}}
 
 {{/each}}
-{{categorias}}
+{{postagens}}
 <div class="card col-md-8 offset-2 mt-4">
-    <h2 >Editar</h2>
+    <h2 >Slug</h2>
     <div class="card-body">
-        <form action="/admin/categorias/new" method="POST">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value="{{categorias.nome}}" class="form-control">
-            
-            <label for="slug">Slug</label>
-            <input type="text" id="slug" name="slug" value="{{categorias.slug}}" class="form-control">
             <button class="btn btn-primary mt-2">Cadastrar</button>
         </form>
     </div>
