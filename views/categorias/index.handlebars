@@ -1,17 +1,16 @@
-{{#each categorias}}
-<div class="card col-md-8 offset-2 mt-4">
-    <h2 >Categorias</h2>
-    <div class="card-body">
-        <h2>Nome: {{nome}}</h2>
-        <p>Slug: {{slug}}</p>
-        <a href="admin/categorias"><button class="btn btn-success">categorias</button></a>
+<div class="card col-md-8 offset-2 mt-2">
 
+    <h3 style="text-align: center;">Categorias</h3>
+{{#each categorias}}
+
+    <div class="card">
+        <a href="/categorias/{{slug}}"><h5>{{nome}}</h5></a>
     </div>
+    {{else}}
+
 
 </div>
-{{else}}
 {{/each}}  
-<div class="alert alert-danger"></div>
 
 
 

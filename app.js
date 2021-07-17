@@ -90,3 +90,24 @@ app.get('/categoria', (req, res) => {
 })
 
 
+app.get("/categorias/:slug", (req, res) => {
+
+  Categorias.findOne({slug: req.params.slug}).lean().then((categorias) => {
+    if(categorias){
+      Postagem.find({categorias: categorias._id}).lean().then((postagems) => {
+        res.render("categorias/postagens", {postagems: postagems})
+      }).catch((err) => {
+        console.log("erro_msg", "erro ao cadastrar")
+        res.redirect("/")
+      })
+    }else{
+      req.flash("erro_msg", "erro ao carregar")
+      res.redirect("/")
+    }
+  }).catch((err) => {
+    req.flash("erro_msg", "erro ao carregar")
+    res.redirect("/")
+  })
+
+})
+
