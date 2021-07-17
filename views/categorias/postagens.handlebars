@@ -1,0 +1,17 @@
+
+
+{{#each postagems}}
+
+<div class="na mt-2 col-md-8 offset-2 mt-2">
+<div class="jumbotron ">
+     
+    <h1>{{titulo}}</h1>
+    <p>{{descricao}}</p>
+    <hr>
+    <a href="/postagens/{{slug}}"><button class="btn btn-success">mostrar mais</button></a>
+    <small>Data de Publicaçao {{data}} </small>
+
+</div>
+</div>
+{{else}}
+{{/each}}
