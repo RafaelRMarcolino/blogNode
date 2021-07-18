@@ -12,6 +12,7 @@ require("./models/Postagem")
 const Postagem = mongoose.model('postagem')
 require("./models/Categorias")
 const Categorias = mongoose.model('categorias')
+const usuarios = require("./routers/usuarios")
 
 
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -44,7 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use("/admin", admin)
 
 app.get("/", (req, res) => {
   Postagem.find().populate("categorias").sort({data: 'desc'}).lean().then((postagems) => {
@@ -60,9 +60,6 @@ app.get('/404', (req, res) => {
   res.send('Erro na pagina')
 })
 
-app.listen(8081, () => {
-    console.log("Conectado com sucesso ");
-});
 
 app.get('/postagens/:slug', (req, res) => {
   Postagem.findOne({slug: req.params.slug}).lean().then((postagems) => {
@@ -110,4 +107,17 @@ app.get("/categorias/:slug", (req, res) => {
   })
 
 })
+
+// rotas
+
+app.use("/admin", admin)
+
+app.use("/usuarios", usuarios)
+
+//localhost
+
+app.listen(8081, () => {
+  console.log("Conectado com sucesso ");
+});
+
 
