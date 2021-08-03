@@ -45,7 +45,6 @@ router.post("/categorias/new", (req,res) => {
         res.render("addcategorias", {erros: erros})
     }
 
-    else{
         const novaCategoria = {
             nome : req.body.nome,
             slug : req.body.slug
@@ -58,7 +57,7 @@ router.post("/categorias/new", (req,res) => {
             req.flash("erro_msg", "erro ao cadastrar")
             console.log("erro cadastro" + err)
         })
-    }
+    
 })
 
 router.get("/categorias/edit/:id", (req, res) => {
@@ -70,19 +69,27 @@ router.get("/categorias/edit/:id", (req, res) => {
     })     
 })
 
-router.post("/categorias/edit/:id", (req, res) => {
-    categorias.nome = req.body.nome,
-    categorias.slug = req.body.slug
+router.post("/categorias/edit", (req, res) => {
+    
+    Categorias.findOne({_id: req.body.id}).then((categorias) => {
 
-    Categorias.save().then((categorias) => {
+        
+        categorias.nome = req.body.nome,
+        categorias.slug = req.body.slug
 
-        req.flash.success_msg("success_msg", "editado com sucesso")
-        res.redirect("admin/categorias")
+        categorias.save().then(() => {
 
-    }).catch((err) => {
-        res.redirect("admin")
-        req.flash("erro_msg", "nao")
-    })
+            req.flash("success_msg", "editado com sucesso")
+            res.redirect("/admin/categorias")
+
+        }).catch((err) => {
+            req.flash("erro_msg", "nao")
+
+            res.redirect("/admin/categorias")
+            console.log("errou "+ err)
+        })
+
+})
 })
 
 router.post("/categorias/del",  (req, res) => {
@@ -202,7 +209,15 @@ router.post("/postagens/edit/new", (req, res) => {
 
 
     
-
+router.post("/postagens/del/:id", (req, res)=>{
+    Postagems.findOne({_id: req.body.id}).deleteOne().then(() => {
+        req.flash("success_msg", "sucesso ao deletar")
+        res.redirect("/admin/postagens")
+    }).catch((err) => {
+        req.flash("erro_msg", "erro ao cadastrar")
+        res.redirect("/")
+    })
+})
 
 
 

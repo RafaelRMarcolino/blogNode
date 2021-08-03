@@ -18,8 +18,7 @@ router.post('/registros', (req, res) => {
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
         erro.push({texto: "erro no nome"})
     }
-
-    
+   
     if(!req.body.email || typeof req.body.email == undefined || req.body.email == null){
         erro.push({texto: "erro no nome"})
     }
@@ -38,9 +37,47 @@ router.post('/registros', (req, res) => {
 
     else{
 
+        Usuarios.findOne({email: req.body.email}).then((usuarios) => {
 
-        
+            if(usuarios){
+                req.flash("erro_msg", "erro no email")
+                res.redirect("/usuarios/registros")
+            }
+            else{
+
+                const novoUsuarios = new Usuarios({
+                    nome: req.body.nome,
+                    email: req.body.email,
+                    senha: req.body.senha
+                })
+                bcrypt.genSalt(10, (erro, salt) => {
+                    bcrypt.hash(novoUsuarios.senha, salt, (erro, hash) => {
+
+                        if(erro){
+                            req.flash("erro_msg", "erro ao cadastrar")
+                            res.redirect("/")
+                        }
+
+                        novoUsuarios.senha = hash
+
+                        novoUsuarios.save().then(() =>{
+                            req.flash("success_msg", "sucesso")
+                            res.redirect("/")
+
+                        }).catch((erro) => {
+                            req.flash("erro_msg", "erro")
+                            res.redirect("/")
+                        })
+
+                    } )
+                })
+            }
+        }).catch((erro) =>{
+            req.flash("erro_msg", "erro ao cadastrar")
+            res.redirect("/")
+        })
     }
 })
 
-module.exports = router;
+
+module.exports = router

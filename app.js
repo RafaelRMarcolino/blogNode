@@ -12,8 +12,29 @@ require("./models/Postagem")
 const Postagem = mongoose.model('postagem')
 require("./models/Categorias")
 const Categorias = mongoose.model('categorias')
-const usuarios = require("./routers/usuarios")
+const usuarios = require("./routers/usuarios");
 
+
+// config
+//session
+app.use(session({
+  secret: 'blog',
+  resave: true,
+  saveUninitialized: true,
+}))
+
+
+
+
+//middleware
+app.use(flash())
+
+app.use((req, res, next) => {
+  res.locals.erro_msg = req.flash("erro_msg")
+  res.locals.success_msg = req.flash("success_msg")
+  next()
+
+})
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
@@ -24,20 +45,6 @@ mongoose.connect('mongodb://localhost:27017/blogt', {useNewUrlParser: true}).the
     console.log("erro" + err)
 }) 
 
-app.use(flash());
-
-app.use(session({
-  secret: 'blog',
-  resave: true,
-  saveUninitialized: true,
-}))
-
-app.use((req, res, next) => {
-  res.locals.erro_msg = req.flash("erro_msg")
-  res.locals.success_msg = req.flash("success_msg")
-  next()
-
-})
 
 app.use(express.static(path.join(__dirname, 'public')));
 
