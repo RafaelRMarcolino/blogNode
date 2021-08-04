@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 require("../models/Usuarios")
 const Usuarios = mongoose.model('usuarios')
 const bcrypt = require("bcryptjs")
+const passport = require("passport")
 
 router.get('/registros', (req, res) => {
 
@@ -77,6 +78,12 @@ router.post('/registros', (req, res) => {
             res.redirect("/")
         })
     }
+})
+
+
+router.get("/login", (req, res) => {
+    res.render("usuarios/login.handlebars")
+
 })
 
 
