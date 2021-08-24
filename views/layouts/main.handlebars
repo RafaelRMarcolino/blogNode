@@ -12,10 +12,19 @@
 <body>
 
     {{>_nav}}
-    {{>_messege}}
+    <div class="container mt-4"></div>
+
+    {{#if error}}
+        <div class="alert alert-danger">{{error}}</div>
+
+    {{else}}
+
+    {{/if}}    
     <div class="container-fluid">
 
+        {{>_messege}}
         {{{body}}}
+
     </div>
 
     <script src="/js/scripts.js"></script>

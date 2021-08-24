@@ -13,6 +13,10 @@ const Postagem = mongoose.model('postagem')
 require("./models/Categorias")
 const Categorias = mongoose.model('categorias')
 const usuarios = require("./routers/usuarios");
+const passport = require("passport")
+require("./config/auth")(passport)
+
+
 
 
 // config
@@ -24,6 +28,10 @@ app.use(session({
 }))
 
 
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 
 
 //middleware
@@ -32,6 +40,8 @@ app.use(flash())
 app.use((req, res, next) => {
   res.locals.erro_msg = req.flash("erro_msg")
   res.locals.success_msg = req.flash("success_msg")
+  res.locals.error = req.flash("error")
+  res.locals.user = req.user || null;
   next()
 
 })
